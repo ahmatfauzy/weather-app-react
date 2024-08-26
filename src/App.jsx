@@ -1,34 +1,49 @@
 import { useState } from "react";
-import './styles/App.css'
+import "./styles/App.css";
 
 const api = {
   key: import.meta.env.VITE_WEATHER_API_KEY,
   baseUrl: "https://api.openweathermap.org/data/2.5/",
 };
 
-
 function App() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [weather, setWeather] = useState({});
 
-  const search = evt => {
+  const search = (evt) => {
     if (evt.key === "Enter") {
-      fetch(`${api.baseUrl}weather?q=${query}&units=metric&APPID=${api.key}`)
-        .then(res => res.json())
-        .then(result => {
+      fetch(`${api.baseUrl}weather?q=${query}&units=metric&appid=${api.key}`)
+        .then((res) => res.json())
+        .then((result) => {
           setWeather(result);
-          setQuery('');
+          setQuery("");
         });
     }
-  }
+  };
 
   const dateBuilder = (d) => {
     let months = [
-      "January", "February", "March", "April", "May", "June", "July",
-      "August", "September", "October", "November", "December"
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
     let days = [
-      "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
     ];
 
     let day = days[d.getDay()];
@@ -37,13 +52,17 @@ function App() {
     let year = d.getFullYear();
 
     return `${day} ${date} ${month} ${year}`;
-  }
+  };
 
   return (
     <div className="app_wrap">
       <main>
         <section className="location">
-          <div className="city">{weather.name ? `${weather.name}, ${weather.sys.country}` : "---, --"}</div>
+          <div className="city">
+            {weather.name
+              ? `${weather.name}, ${weather.sys.country}`
+              : "---, --"}
+          </div>
           <div className="date">{dateBuilder(new Date())}</div>
         </section>
         <div className="main_temp">
@@ -54,7 +73,11 @@ function App() {
             {weather.weather ? weather.weather[0].main : "--"}
           </div>
           <div className="high_low">
-            {weather.main ? `${Math.round(weather.main.temp_min)}°C / ${Math.round(weather.main.temp_max)}°C` : "--°C / --°C"}
+            {weather.main
+              ? `${Math.round(weather.main.temp_min)}°C / ${Math.round(
+                  weather.main.temp_max
+                )}°C`
+              : "--°C / --°C"}
           </div>
         </div>
       </main>
@@ -63,7 +86,7 @@ function App() {
           type="text"
           className="search_box"
           placeholder="Search"
-          onChange={e => setQuery(e.target.value)}
+          onChange={(e) => setQuery(e.target.value)}
           value={query}
           onKeyPress={search}
         />
